@@ -9,7 +9,10 @@ def normalize(data):
               return data
         min = np.min(data)
         max = np.max(data)
-        data_norm = (data - min)/(max-min)
+        range = max-min
+        if(range == 0):
+            return np.zeros_like(data)
+        data_norm = (data - min)/range
         return data_norm
 
 if __name__ == '__main__':
@@ -28,7 +31,13 @@ if __name__ == '__main__':
     x_test_raw = np.array(test['Experience Years'])
     y_test_raw = np.array(test['Salary'])
 
-    
+    x_train_raw = np.reshape(x_train_raw, (x_train_raw.shape[0], 1))
+    y_train_raw = np.reshape(y_train_raw, (y_train_raw.shape[0], 1))
+    x_test_raw = np.reshape(x_test_raw, (x_test_raw.shape[0], 1))
+    y_test_raw = np.reshape(y_test_raw, (y_test_raw.shape[0], 1))
 
     x_train = normalize(x_train_raw)
-    print('hi')
+    y_train = normalize(y_train_raw)
+    x_test = normalize(x_test_raw)
+    y_test = normalize(y_test_raw)
+    

@@ -1,24 +1,51 @@
 import unittest
+from sklearn.preprocessing import MinMaxScaler
 import numpy as np
-
 from linear_regression import normalize
 
 
-class TestFunctions(unittest.TestCase):
+class TestNormalize(unittest.TestCase):
     
-    def test_normalize(self):
-        input = np.array([1, 2, 3, 5])
-        expected = np.array([0, 0.25, 0.5, 1])
+    def test_basic(self):
+        input = np.reshape(np.array([1, 2, 3, 5]), (-1, 1))
+        scaler = MinMaxScaler()
+        expected = scaler.fit_transform(input)
         result = normalize(input)
-        self.assertEqual(result.all(), expected.all(), f"Expected {expected} but got {result}")
-
-        
-        #print('passed') if(self.assertEqual(result, expected)) else print('failed')
+        np.testing.assert_array_almost_equal(result, expected, decimal=6, verbose=True)
 
     def test_zero(self):
-        input = np.array([0, 0, 0, 0])
-        expected = np.array([0, 0, 0, 0])
+        input = np.reshape(np.array([0, 0, 0, 0]), (-1, 1))
+        scaler = MinMaxScaler()
+        expected = scaler.fit_transform(input)
         result = normalize(input)
-        self.assertEqual(result.all(), expected.all(), f"Expected {expected} but got {result}")
+        np.testing.assert_array_almost_equal(result, expected, decimal=6, verbose=True)
+
+    def test_negative(self):
+        input = np.reshape(np.array([-1, -2, -8, -3]), (-1, 1))
+        scaler = MinMaxScaler()
+        expected = scaler.fit_transform(input)
+        result = normalize(input)
+        np.testing.assert_array_almost_equal(result, expected, decimal=6, verbose=True)
+
+    def test_extreme_small(self):
+        input = np.reshape(np.array([0.0001, 0.0002, 0.0003, -0.0004]), (-1, 1))
+        scaler = MinMaxScaler()
+        expected = scaler.fit_transform(input)
+        result = normalize(input)
+        np.testing.assert_array_almost_equal(result, expected, decimal=6, verbose=True)
+
+    def test_extreme_large(self):
+        input = np.reshape(np.array([10000, 200000, 50000, 10000, 2000000]), (-1, 1))
+        scaler = MinMaxScaler()
+        expected = scaler.fit_transform(input)
+        result = normalize(input)
+        np.testing.assert_array_almost_equal(result, expected, decimal=6, verbose=True)
+
+    def test_same(self):
+        input = np.reshape(np.array([5, 5]), (-1, 1))
+        scaler = MinMaxScaler()
+        expected = scaler.fit_transform(input)
+        result = normalize(input)
+        np.testing.assert_array_almost_equal(result, expected, decimal=6, verbose=True)
 
 unittest.main()

@@ -1,10 +1,10 @@
 import unittest
 from sklearn.preprocessing import MinMaxScaler
 import numpy as np
-from linear_regression import normalize
+from linear_regression import normalize, initialize_parameters
 
 
-class TestNormalize(unittest.TestCase):
+class test_normalize(unittest.TestCase):
     
     def test_basic(self):
         input = np.reshape(np.array([1, 2, 3, 5]), (-1, 1))
@@ -47,5 +47,14 @@ class TestNormalize(unittest.TestCase):
         expected = scaler.fit_transform(input)
         result = normalize(input)
         np.testing.assert_array_almost_equal(result, expected, decimal=6, verbose=True)
+
+class test_initialize_parameters(unittest.TestCase):
+
+    def test_basic(self):
+        w, b = initialize_parameters()
+        self.assertGreaterEqual(w, 0)
+        self.assertLessEqual(w, 1)
+        self.assertGreaterEqual(b, 0)
+        self.assertLessEqual(b, 1)
 
 unittest.main()

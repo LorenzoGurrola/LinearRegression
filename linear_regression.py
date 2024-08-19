@@ -2,6 +2,7 @@
 from sklearn.model_selection import train_test_split
 import pandas as pd
 import numpy as np
+import random
 import sys
 
 def normalize(data):
@@ -15,15 +16,16 @@ def normalize(data):
         data_norm = (data - min)/range
         return data_norm
 
+def initialize_parameters():
+    w = random.random()
+    b = 0
+    return w, b
+
+
 if __name__ == '__main__':
-
-    sys.path.append(
-        r'c:\users\lorenzo\desktop\worskspace\github\linearregression\.venv\lib\site-packages')
-    sys.path.append(
-        r'c:\users\lorenzo\desktop\worskspace\github\linearregression\.venv\lib\site-packages')
-
     data = pd.read_csv(
         'https://github.com/ybifoundation/Dataset/raw/main/Salary%20Data.csv')
+    
     train, test = train_test_split(data, train_size=0.75, random_state=10)
 
     x_train_raw = np.array(train['Experience Years'])
@@ -40,4 +42,3 @@ if __name__ == '__main__':
     y_train = normalize(y_train_raw)
     x_test = normalize(x_test_raw)
     y_test = normalize(y_test_raw)
-    
